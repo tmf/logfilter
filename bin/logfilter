@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder,
     Symfony\Component\Config\FileLocator,
     Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
-use Tmf\LogFilter\Event\LogFilterEvents,
+use Tmf\LogFilter\Event\LogFilterEventListener,
     Tmf\LogFilter\Event\LogEntriesEvent,
     Tmf\LogFilter\LogEntry;
 
@@ -40,15 +40,14 @@ $logEntries = [
     new LogEntry('1.1.1.1', 21, '/test?asdf=66', ''),
     new LogEntry('1.1.1.1', 22, '/test?asdf=99', ''),
     new LogEntry('4.4.4.4', 22, '/test?asdf=99', ''),
-    new LogEntry('1.1.1.1', 23, '/test?asdf=44', ''),
-    new LogEntry('1.1.1.1', 23, '/test?asdf=33', ''),
+    //new LogEntry('1.1.1.1', 23, '/test?asdf=44', ''),
     new LogEntry('5.5.5.5', 30, '/qwer?asdf=99', ''),
     new LogEntry('5.5.5.5', 40, '/test?asdf=99', ''),
 ];
 
 foreach ($logEntries as $logEntry) {
-    $dispatcher->dispatch(LogFilterEvents::PROCESS, new LogEntriesEvent([$logEntry]));
+    $dispatcher->dispatch(LogFilterEventListener::PROCESS, new LogEntriesEvent([$logEntry]));
 }
-$dispatcher->dispatch(LogFilterEvents::PROCESS, new LogEntriesEvent([], true));
+$dispatcher->dispatch(LogFilterEventListener::PROCESS, new LogEntriesEvent([], true));
 
-$dispatcher->dispatch(LogFilterEvents::REPORT);
+$dispatcher->dispatch(LogFilterEventListener::REPORT);
