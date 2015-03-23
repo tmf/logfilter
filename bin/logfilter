@@ -16,38 +16,18 @@ use Symfony\Component\DependencyInjection\ContainerBuilder,
     Symfony\Component\Config\FileLocator,
     Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
-use Tmf\LogFilter\Event\LogFilterEventListener,
-    Tmf\LogFilter\Event\LogEntriesEvent,
-    Tmf\LogFilter\LogEntry;
+use Tmf\LogFilter\LogEntryProducer;
 
 $container = new ContainerBuilder();
+$baseDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
 
-$loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/..'));
+$loader = new YamlFileLoader($container, new FileLocator($baseDir));
 $loader->load('config.yml');
 $container->addCompilerPass(new RegisterListenersPass());
 $container->compile();
 
 /**
- * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+ * @var LogEntryProducer $logEntryProducer
  */
-$dispatcher = $container->get('event_dispatcher');
-
-$logEntries = [
-    new LogEntry('1.1.1.1', 10, '/test?asdf=88', ''),
-    new LogEntry('2.2.2.2', 11, '/test?asdf=99', ''),
-    new LogEntry('1.1.1.1', 20, '/test?asdf=77', ''),
-    new LogEntry('3.3.3.3', 20, '/test?asdf=99', ''),
-    new LogEntry('1.1.1.1', 21, '/test?asdf=66', ''),
-    new LogEntry('1.1.1.1', 22, '/test?asdf=99', ''),
-    new LogEntry('4.4.4.4', 22, '/test?asdf=99', ''),
-    //new LogEntry('1.1.1.1', 23, '/test?asdf=44', ''),
-    new LogEntry('5.5.5.5', 30, '/qwer?asdf=99', ''),
-    new LogEntry('5.5.5.5', 40, '/test?asdf=99', ''),
-];
-
-foreach ($logEntries as $logEntry) {
-    $dispatcher->dispatch(LogFilterEventListener::PROCESS, new LogEntriesEvent([$logEntry]));
-}
-$dispatcher->dispatch(LogFilterEventListener::PROCESS, new LogEntriesEvent([], true));
-
-$dispatcher->dispatch(LogFilterEventListener::REPORT);
+$logEntryProducer = $container->get('tmf.logfilter.reader');
+$logEntryProducer->process($baseDir . DIRECTORY_SEPARATOR . 'access.log');
