@@ -1,0 +1,23 @@
+{
+  "name": "tmf/logfilter",
+  "description": "a cli app for filtering web server access logs",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Tom Forrer",
+      "email": "tom.forrer@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Tmf\\LogFilter\\": "src"
+    }
+  },
+  "require": {
+    "symfony/dependency-injection": "~2.6",
+    "symfony/config": "~2.6",
+    "symfony/yaml": "~2.6",
+    "symfony/event-dispatcher": "~2.6"
+  }
+}

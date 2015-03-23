@@ -1,0 +1,32 @@
+services:
+    event_dispatcher:
+        class: Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher
+        arguments:
+            - @service_container
+
+    tmf.logfilter.endpoint:
+        class: Tmf\LogFilter\Filter\EndPointFilter
+        arguments:
+            endpoints:
+                - "\\/test"
+        tags:
+            - { priority: 10, name: kernel.event_listener, event: logfilter.process, method: onProcess }
+
+    tmf.logfilter.requestabuse:
+        class: Tmf\LogFilter\Filter\RequestAbuseFilter
+        arguments:
+            window: 4
+            maxHits: 3
+        tags:
+            - { priority: 9, name: kernel.event_listener, event: logfilter.process, method: onProcess }
+            - { name: kernel.event_listener, event: logfilter.report, method: onReport }
+
+
+    tmf.logfilter.getparameter:
+        class: Tmf\LogFilter\Filter\GetParameterCounter
+        arguments:
+            getParameter: "asdf"
+        tags:
+            - { priority: 8, name: kernel.event_listener, event: logfilter.process, method: onProcess }
+            - { name: kernel.event_listener, event: logfilter.report, method: onReport }
+
