@@ -11,23 +11,8 @@ set_time_limit(0);
 
 (@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../autoload.php';
 
-use Symfony\Component\DependencyInjection\ContainerBuilder,
-    Symfony\Component\DependencyInjection\Loader\YamlFileLoader,
-    Symfony\Component\Config\FileLocator,
-    Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
-use Tmf\LogFilter\LogEntryProducer;
+use Tmf\LogFilter\Console\Application;
 
-$container = new ContainerBuilder();
-$baseDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
-
-$loader = new YamlFileLoader($container, new FileLocator($baseDir));
-$loader->load('config.yml');
-$container->addCompilerPass(new RegisterListenersPass());
-$container->compile();
-
-/**
- * @var LogEntryProducer $logEntryProducer
- */
-$logEntryProducer = $container->get('tmf.logfilter.reader');
-$logEntryProducer->process($baseDir . DIRECTORY_SEPARATOR . 'access.log');
+$app = new Application();
+$app->run();
