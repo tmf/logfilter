@@ -61,6 +61,4 @@ class LogEntriesEvent extends Event
     {
         $this->flush = $flush;
     }
-
-
 }
