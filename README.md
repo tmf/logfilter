@@ -49,3 +49,9 @@ Extend
 You can tie in your own filters (like a UserAgent filter, or a Datacenter IP-Block filter). 
 EventListeners will receive a LogEntriesEvent event, whenever a 'logfilter.process' or 'logfilter.ban_host' event is dispatched.
 The LogEntriesEvent can have one or multiple LogEntry objects (multiple: when log entries are withheld)
+
+
+Todo
+----
+ - use console output for reports
+ - cleanup
