@@ -19,6 +19,7 @@
     "symfony/config": "~2.6",
     "symfony/yaml": "~2.6",
     "symfony/event-dispatcher": "~2.6",
-    "mvar/apache2-log-parser": "~1.0"
+    "mvar/apache2-log-parser": "~1.0",
+    "symfony/console": "~2.6"
   }
 }
