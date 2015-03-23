@@ -9,38 +9,40 @@ Usage
 -----
 1. Configure the filter chain with config.yml: declare your EventListener's as Services, order by inverse with priority parameter in the tag.
     ```yaml`
-        # ... event dispatcher, other services under the 'services' key
-            tmf.logfilter.endpoint:
-                class: Tmf\LogFilter\Filter\EndPointFilter
-                arguments:
-                    endpoints:
-                        - "\\/test"
-                tags:
-                    - { priority: 10, name: kernel.event_listener, event: logfilter.process, method: onProcess }
-            
-            tmf.logfilter.requestabuse:
-                class: Tmf\LogFilter\Filter\RequestAbuseFilter
-                arguments:
-                    window: 5
-                    maxHits: 3
-                    eventDispatcher: @event_dispatcher
-                tags:
-                    - { priority: 9, name: kernel.event_listener, event: logfilter.process, method: onProcess }
-                    - { name: kernel.event_listener, event: logfilter.report, method: onReport }
-                    - { name: kernel.event_listener, event: logfilter.ban_host, method: onBanHost }
-            
-            tmf.logfilter.getparameter:
-                class: Tmf\LogFilter\Filter\GetParameterCounter
-                arguments:
-                    getParameter: "asdf"
-                tags:
-                    - { priority: 8, name: kernel.event_listener, event: logfilter.process, method: onProcess }
-                    - { name: kernel.event_listener, event: logfilter.report, method: onReport }
-                    - { name: kernel.event_listener, event: logfilter.ban_host, method: onBanHost }
-            
+    # ... event dispatcher, other services under the 'services' key
+    
+        tmf.logfilter.endpoint:
+            class: Tmf\LogFilter\Filter\EndPointFilter
+            arguments:
+                endpoints:
+                    - "\\/test"
+            tags:
+                - { priority: 10, name: kernel.event_listener, event: logfilter.process, method: onProcess }
+        
+        tmf.logfilter.requestabuse:
+            class: Tmf\LogFilter\Filter\RequestAbuseFilter
+            arguments:
+                window: 5
+                maxHits: 3
+                eventDispatcher: @event_dispatcher
+            tags:
+                - { priority: 9, name: kernel.event_listener, event: logfilter.process, method: onProcess }
+                - { name: kernel.event_listener, event: logfilter.report, method: onReport }
+                - { name: kernel.event_listener, event: logfilter.ban_host, method: onBanHost }
+        
+        tmf.logfilter.getparameter:
+            class: Tmf\LogFilter\Filter\GetParameterCounter
+            arguments:
+                getParameter: "asdf"
+            tags:
+                - { priority: 8, name: kernel.event_listener, event: logfilter.process, method: onProcess }
+                - { name: kernel.event_listener, event: logfilter.report, method: onReport }
+                - { name: kernel.event_listener, event: logfilter.ban_host, method: onBanHost }
+        
     ```
 2. Run the logfilter with
     (not yet implemented)
+    
     ```bash
         ./bin/logfilter --config=config.yml access.log
     ```
