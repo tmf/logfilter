@@ -5,7 +5,7 @@ services:
             - @service_container
 
     tmf.logfilter.reader:
-        class: Tmf\LogFilter\LogFileReader
+        class: Tmf\LogFilter\LogEntryProducer
         arguments:
             - @event_dispatcher
 
@@ -13,7 +13,7 @@ services:
         class: Tmf\LogFilter\Filter\EndPointFilter
         arguments:
             endpoints:
-                - "\\/test"
+                - "\\/endpoint"
         tags:
             - { priority: 10, name: kernel.event_listener, event: logfilter.process, method: onProcess }
 
@@ -31,7 +31,7 @@ services:
     tmf.logfilter.getparameter:
         class: Tmf\LogFilter\Filter\GetParameterCounter
         arguments:
-            getParameter: "asdf"
+            getParameter: "param"
         tags:
             - { priority: 8, name: kernel.event_listener, event: logfilter.process, method: onProcess }
             - { name: kernel.event_listener, event: logfilter.report, method: onReport }

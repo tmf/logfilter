@@ -16,17 +16,18 @@ use Symfony\Component\DependencyInjection\ContainerBuilder,
     Symfony\Component\Config\FileLocator,
     Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
-use Tmf\LogFilter\LogFileReaderInterface;
+use Tmf\LogFilter\LogEntryProducer;
 
 $container = new ContainerBuilder();
+$baseDir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..');
 
-$loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/..'));
+$loader = new YamlFileLoader($container, new FileLocator($baseDir));
 $loader->load('config.yml');
 $container->addCompilerPass(new RegisterListenersPass());
 $container->compile();
 
 /**
- * @var LogFileReaderInterface $reader
+ * @var LogEntryProducer $logEntryProducer
  */
-$reader = $container->get('tmf.logfilter.reader');
-$reader->read('access.log');
+$logEntryProducer = $container->get('tmf.logfilter.reader');
+$logEntryProducer->process($baseDir . DIRECTORY_SEPARATOR . 'access.log');
