@@ -4,6 +4,11 @@ services:
         arguments:
             - @service_container
 
+    tmf.logfilter.reader:
+        class: Tmf\LogFilter\LogFileReader
+        arguments:
+            - @event_dispatcher
+
     tmf.logfilter.endpoint:
         class: Tmf\LogFilter\Filter\EndPointFilter
         arguments:
